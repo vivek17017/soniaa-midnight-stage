@@ -1,0 +1,7 @@
+# Optional cloud-backed development only. The standard local preview needs no settings.
+SUPABASE_URL=
+SUPABASE_PUBLISHABLE_KEY=
+PORTFOLIO_DATABASE_TOKEN=
+REPORT_OWNER_EMAIL=
+ENQUIRY_RECIPIENT=
+SITE_ORIGIN=
