@@ -1,5 +1,4 @@
-import { env } from "cloudflare:workers";
-
+const env = process.env;
 export async function notifyEnquiry(id: string) {
   const {SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, PORTFOLIO_DATABASE_TOKEN, ENQUIRY_RECIPIENT} = env;
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY || !PORTFOLIO_DATABASE_TOKEN || !ENQUIRY_RECIPIENT) {

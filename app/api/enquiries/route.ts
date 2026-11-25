@@ -1,4 +1,4 @@
-import { waitUntil } from "cloudflare:workers";
+import { after } from "next/server";
 import {portfolioRequest, json, parseEnquiry, readBody} from "@/lib/server-data";
 import {notifyEnquiry} from "@/lib/notifications";
 
@@ -15,9 +15,13 @@ export async function POST(request: Request) {
     if (saved === "conflict") return json({error:"This enquiry reference is already in use. Please edit your message and try again."},409);
     if (saved === "limited") return json({error:"Several messages have already been saved. Please try later or connect on LinkedIn."},429);
     if (saved !== "created") throw new Error("Unexpected enquiry status");
-    waitUntil(notifyEnquiry(id).catch(() => {
-      console.error("Notification attempt unavailable. The enquiry remains saved.");
-    }));
+    after(async () => {
+  try {
+    await notifyEnquiry(id);
+  } catch {
+    console.error("Notification attempt unavailable. The enquiry remains saved.");
+  }
+});
     return json({saved:true,reference:id},201);
   } catch { return json({error:"The enquiry could not be confirmed. Your draft is still here. Please try again."},503); }
 }
